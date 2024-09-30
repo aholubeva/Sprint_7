@@ -1,6 +1,7 @@
 import requests
 import pytest
 import allure
+from src.config import Config
 
 
 class TestCreateOrder:
@@ -19,6 +20,6 @@ class TestCreateOrder:
     def test_create_order_return_track_id(self, payload_data):
 
         payload = payload_data
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/orders', json=payload)
+        response = requests.post(f"{Config.url}/orders", json=payload)
         track_id = response.json()['track']
         assert response.status_code == 201 and response.json()['track'] == track_id

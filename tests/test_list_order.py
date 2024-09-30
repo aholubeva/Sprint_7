@@ -1,5 +1,6 @@
 import requests
 import allure
+from src.config import Config
 
 
 class TestListOrders:
@@ -7,7 +8,7 @@ class TestListOrders:
     @allure.title("Проверяем, что запрос возвращает список заказов")
     def test_create_order_return_track_id(self):
 
-        response = requests.get('https://qa-scooter.praktikum-services.ru/api/v1/orders')
+        response = requests.get(f"{Config.url}/orders")
         orders_list = response.json()['orders']
         print(response.status_code)
         print(response.text)

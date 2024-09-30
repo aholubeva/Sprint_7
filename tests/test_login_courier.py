@@ -2,7 +2,7 @@ import requests
 from src.helpers import register_new_courier_and_return_login_password
 from src.helpers import generate_random_str
 import allure
-
+from src.config import Config
 
 class TestLoginCourier:
 
@@ -13,7 +13,7 @@ class TestLoginCourier:
             "login": login,
             "password": password
         }
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert response.status_code == 200
 
     @allure.title('Проверяем успешный логин курьера, запрос возвращает id курьера')
@@ -24,7 +24,7 @@ class TestLoginCourier:
             "password": password
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         courier_id = response.json()['id']
         assert response.status_code == 200 and response.json()['id'] == courier_id
 
@@ -36,7 +36,7 @@ class TestLoginCourier:
             "password": password
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert (response.status_code == 400 and response.json()['message'] == "Недостаточно данных для входа")
 
     @allure.title('Проверяем, что курьер не может залогиниться с пустым паролем, запрос возвращает ошибку с кодом 400')
@@ -47,7 +47,7 @@ class TestLoginCourier:
             "password": ""
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert (response.status_code == 400 and response.json()['message'] == "Недостаточно данных для входа")
 
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным логином, запрос возвращает ошибку с кодом 404')
@@ -59,7 +59,7 @@ class TestLoginCourier:
             "password": password
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert (response.status_code == 404 and response.json()['message'] == "Учетная запись не найдена")
 
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным паролем, запрос возвращает ошибку с кодом 404')
@@ -71,7 +71,7 @@ class TestLoginCourier:
             "password": random_string
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert (response.status_code == 404 and response.json()['message'] == "Учетная запись не найдена")
 
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным логином и паролем, запрос возвращает ошибку с кодом 400')
@@ -83,5 +83,5 @@ class TestLoginCourier:
             "password": password
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier/login', data=payload)
+        response = requests.post(f"{Config.url}/courier/login", data=payload)
         assert (response.status_code == 404 and response.json()['message'] == "Учетная запись не найдена")
