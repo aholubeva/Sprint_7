@@ -24,39 +24,19 @@ class TestCreateCourier:
         response = requests.post(f"{Config.url}/courier", data=payload)
         assert (response.status_code == 409 and response.json()['message'] == "Этот логин уже используется. Попробуйте другой.")
 
-    @allure.title('Проверяем, что нельзя создать курьера с пустым логином, запрос возвращает ошибку с кодом 400')
-    def test_create_courier_with_empty_login_error_400(self):
+    @pytest.mark.parametrize(
+        "payload_data",
+        [
+            {"login": "", "password": "password", "firstName": "Анастасия"},
+            {"login": "login", "password": "", "firstName": "Анастасия"},
+            {"login": "login", "password": "password", "firstName": ""}
 
-        payload = {
-            "login": "",
-            "password": "password",
-            "firstName": "Анастасия"
-        }
+        ]
+    )
+    @allure.title('Проверяем, что нельзя создать курьера с пустым логином/или паролем/или именем, запрос возвращает ошибку с кодом 400')
+    def test_create_courier_with_empty_login_error_400(self, payload_data):
 
+        payload = payload_data
         response = requests.post(f"{Config.url}/courier", data=payload)
         assert (response.status_code == 400 and response.json()['message'] == "Недостаточно данных для создания учетной записи")
 
-    @allure.title('Проверяем, что нельзя создать курьера с пустым паролем, запрос возвращает ошибку с кодом 400')
-    def test_create_courier_with_empty_password_error_400(self):
-
-        payload = {
-            "login": "login",
-            "password": "",
-            "firstName": "Анастасия"
-        }
-
-        response = requests.post(f"{Config.url}/courier", data=payload)
-        assert (response.status_code == 400 and response.json()['message'] == "Недостаточно данных для создания учетной записи")
-
-    @allure.title('Проверяем, что нельзя создать курьера с именем, запрос возвращает ошибку с кодом 400')
-    @pytest.mark.xfailed # можно создать курьера с пустым "firstName", что противоречит документации
-    def test_create_courier_with_empty_first_name_error_400(self):
-
-        payload = {
-            "login": "login",
-            "password": "password",
-            "firstName": ""
-        }
-
-        response = requests.post(f"{Config.url}/courier", data=payload)
-        assert (response.status_code == 400 and response.json()['message'] == "Недостаточно данных для создания учетной записи")
