@@ -1,6 +1,6 @@
 import requests
 import allure
-from src.config import Config
+from config import Config
 
 
 class TestListOrders:

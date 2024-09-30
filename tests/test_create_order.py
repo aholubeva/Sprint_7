@@ -1,7 +1,7 @@
 import requests
 import pytest
 import allure
-from src.config import Config
+from config import Config
 
 
 class TestCreateOrder:

@@ -1,8 +1,8 @@
 import requests
-from src.helpers import register_new_courier_and_return_login_password
-from src.helpers import generate_random_string
+from helpers import register_new_courier_and_return_login_password
+from helpers import generate_random_string
 import allure
-from src.config import Config
+from config import Config
 
 class TestLoginCourier:
 
