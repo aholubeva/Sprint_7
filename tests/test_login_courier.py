@@ -1,6 +1,6 @@
 import requests
 from src.helpers import register_new_courier_and_return_login_password
-from src.helpers import generate_random_str
+from src.helpers import generate_random_string
 import allure
 from src.config import Config
 
@@ -53,7 +53,7 @@ class TestLoginCourier:
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным логином, запрос возвращает ошибку с кодом 404')
     def test_courier_login_with_invalid_login_error_404(self):
         login, password, response_status_code, response_status_text = register_new_courier_and_return_login_password()
-        random_string = generate_random_str(10)
+        random_string = generate_random_string(10)
         payload = {
             "login": random_string,
             "password": password
@@ -65,7 +65,7 @@ class TestLoginCourier:
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным паролем, запрос возвращает ошибку с кодом 404')
     def test_courier_login_with_invalid_password_error_404(self):
         login, password, response_status_code, response_status_text = register_new_courier_and_return_login_password()
-        random_string = generate_random_str(10)
+        random_string = generate_random_string(10)
         payload = {
             "login": login,
             "password": random_string
@@ -76,8 +76,8 @@ class TestLoginCourier:
 
     @allure.title('Проверяем, что курьер не может залогиниться с невалидным логином и паролем, запрос возвращает ошибку с кодом 400')
     def test_courier_login_with_not_existing_user_error_404(self):
-        login = generate_random_str(10)
-        password = generate_random_str(10)
+        login = generate_random_string(10)
+        password = generate_random_string(10)
         payload = {
             "login": login,
             "password": password
